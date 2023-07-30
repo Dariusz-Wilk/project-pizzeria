@@ -102,6 +102,9 @@
 			thisProduct.priceElem = thisProduct.element.querySelector(
 				select.menuProduct.priceElem
 			);
+			thisProduct.imageWrapper = thisProduct.element.querySelector(
+				select.menuProduct.imageWrapper
+			);
 		}
 
 		initAccorddion() {
@@ -180,6 +183,16 @@
 
 					const selectedItem =
 						paramId in formData && formData[paramId].includes(optionId);
+					const image = thisProduct.imageWrapper.querySelector(
+						`.${paramId}-${optionId}`
+					);
+
+					if (image) {
+						image.classList.toggle(
+							classNames.menuProduct.imageVisible,
+							selectedItem
+						);
+					}
 
 					if (selectedItem) {
 						if (!option.default) {
