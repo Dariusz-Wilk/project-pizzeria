@@ -43,8 +43,8 @@
 	const settings = {
 		amountWidget: {
 			defaultValue: 1,
-			defaultMin: 1,
-			defaultMax: 9,
+			defaultMin: 0,
+			defaultMax: 10,
 		},
 	};
 
@@ -225,6 +225,8 @@
 			console.log(`Constructor arguments: `, element);
 
 			this.getElements(element);
+			this.setValue(this.input.value);
+			this.initAction();
 		}
 
 		getElements(element) {
@@ -243,11 +245,32 @@
 
 			/* TODO: Add validation */
 
-			if (this.value !== newValue && !isNaN(newValue)) {
+			if (
+				this.value !== newValue &&
+				!isNaN(newValue) &&
+				newValue >= settings.amountWidget.defaultMin &&
+				newValue <= settings.amountWidget.defaultMax
+			) {
 				this.value = newValue;
 			}
 
 			this.input.value = this.value;
+		}
+
+		initAction() {
+			this.input.addEventListener('change', () => {
+				this.setValue(this.input.value);
+			});
+			this.linkDecrease.addEventListener('click', event => {
+				event.preventDefault();
+				console.log(this.input.value--);
+				this.setValue(this.input.value--);
+			});
+			this.linkIncrease.addEventListener('click', event => {
+				event.preventDefault();
+				console.log(this.input.value++);
+				this.setValue(this.input.value++);
+			});
 		}
 	}
 
