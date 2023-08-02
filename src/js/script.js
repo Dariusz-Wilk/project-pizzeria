@@ -64,6 +64,7 @@
 			thisProduct.getElements();
 			thisProduct.initAccorddion();
 			thisProduct.initOrderForm();
+			this.initAmountWidget();
 			thisProduct.processOrder();
 			console.log(`New Product: `, thisProduct);
 		}
@@ -104,6 +105,9 @@
 			);
 			thisProduct.imageWrapper = thisProduct.element.querySelector(
 				select.menuProduct.imageWrapper
+			);
+			this.amountWidgetElem = this.element.querySelector(
+				select.menuProduct.amountWidget
 			);
 		}
 
@@ -208,6 +212,42 @@
 
 			// update calculated price in the HTML
 			thisProduct.priceElem.innerHTML = price;
+		}
+
+		initAmountWidget() {
+			this.amountWidget = new AmountWidget(this.amountWidgetElem);
+		}
+	}
+
+	class AmountWidget {
+		constructor(element) {
+			console.log(`AmountWidget: ` + this);
+			console.log(`Constructor arguments: `, element);
+
+			this.getElements(element);
+		}
+
+		getElements(element) {
+			this.element = element;
+			this.input = this.element.querySelector(select.widgets.amount.input);
+			this.linkDecrease = this.element.querySelector(
+				select.widgets.amount.linkDecrease
+			);
+			this.linkIncrease = this.element.querySelector(
+				select.widgets.amount.linkIncrease
+			);
+		}
+
+		setValue(value) {
+			const newValue = parseInt(value);
+
+			/* TODO: Add validation */
+
+			if (this.value !== newValue && !isNaN(newValue)) {
+				this.value = newValue;
+			}
+
+			this.input.value = this.value;
 		}
 	}
 
