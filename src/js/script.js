@@ -219,6 +219,7 @@
 		initAmountWidget() {
 			this.amountWidget = new AmountWidget(this.amountWidgetElem);
 			this.amountWidgetElem.addEventListener('update', () => {
+				// how this instancy knows 'update' exist?
 				this.processOrder();
 			});
 		}
@@ -230,7 +231,7 @@
 			console.log(`Constructor arguments: `, element);
 
 			this.getElements(element);
-			this.setValue(this.input.value);
+			this.setValue(settings.amountWidget.defaultValue);
 			this.initAction();
 		}
 
