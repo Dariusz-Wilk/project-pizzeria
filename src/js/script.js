@@ -206,9 +206,11 @@
 				});
 			}
 
-			thisProduct.cartButton.addEventListener('click', function (event) {
+			thisProduct.cartButton.addEventListener('click', event => {
 				event.preventDefault();
 				thisProduct.processOrder();
+				this.addToCart();
+				this.prepareCartProduct();
 			});
 		}
 
@@ -259,6 +261,8 @@
 					}
 				}
 			}
+			this.priceSingle = price;
+
 			// Multiply price by amount;
 			price *= this.amountWidget.value;
 
@@ -272,6 +276,23 @@
 				// how this instancy knows 'update' exist?
 				this.processOrder();
 			});
+		}
+
+		addToCart() {
+			app.cart.add(this.prepareCartProduct());
+		}
+
+		prepareCartProduct() {
+			const productSummary = {};
+
+			productSummary.id = this.id;
+			productSummary.name = this.data.name;
+			productSummary.amount = this.amountWidget.value;
+			productSummary.priceSingle = this.priceSingle;
+			productSummary.totatPrice =
+				productSummary.amount * productSummary.priceSingle;
+			productSummary.params = {};
+			return productSummary;
 		}
 	}
 
@@ -362,6 +383,10 @@
 					this.dom.wrapper.classList.remove(classNames.cart.wrapperActive);
 				}
 			});
+		}
+
+		add(menuProduct) {
+			console.log(`adding product: `, menuProduct);
 		}
 	}
 
