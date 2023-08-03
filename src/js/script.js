@@ -353,8 +353,14 @@
 		}
 
 		initActions() {
-			this.dom.toggleTrigger.addEventListener('click', () => {
-				this.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+			document.addEventListener('click', e => {
+				if (e.target.closest(select.cart.toggleTrigger)) {
+					this.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+				}
+
+				if (!e.target.closest(select.containerOf.cart)) {
+					this.dom.wrapper.classList.remove(classNames.cart.wrapperActive);
+				}
 			});
 		}
 	}
