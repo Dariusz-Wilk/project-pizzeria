@@ -334,8 +334,9 @@
 			console.log(`AmountWidget: ` + this);
 			console.log(`Constructor arguments: `, element);
 
+			this.value = settings.amountWidget.defaultValue;
 			this.getElements(element);
-			this.setValue(settings.amountWidget.defaultValue);
+			this.setValue(this.input.value);
 			this.initAction();
 		}
 
@@ -445,6 +446,7 @@
 			this.priceSingle = menuProduct.priceSingle;
 
 			this.getElements(element);
+			this.initAmountWidget();
 			console.log(`CartProducts: `, this);
 		}
 
@@ -459,6 +461,19 @@
 			this.dom.remove = this.dom.wrapper.querySelector(
 				select.cartProduct.remove
 			);
+		}
+
+		initAmountWidget() {
+			this.amountWidget = new AmountWidget(this.dom.amountWidget);
+			this.dom.amountWidget.addEventListener('update', () => {
+				this.newPrice();
+			});
+		}
+
+		newPrice() {
+			this.price = this.amountWidget.value * this.priceSingle;
+			this.dom.price.textContent = this.price;
+			this.amount = this.amountWidget.value;
 		}
 	}
 
