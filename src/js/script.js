@@ -429,6 +429,36 @@
 			this.element = utils.createDOMFromHTML(generatedHTML);
 
 			this.dom.productList.appendChild(this.element);
+
+			this.products.push(new CartProduct(menuProduct, this.element));
+			console.log(this.products);
+		}
+	}
+
+	class CartProduct {
+		constructor(menuProduct, element) {
+			this.amount = menuProduct.amount;
+			this.id = menuProduct.id;
+			this.name = menuProduct.name;
+			this.params = menuProduct.params;
+			this.price = menuProduct.price;
+			this.priceSingle = menuProduct.priceSingle;
+
+			this.getElements(element);
+			console.log(`CartProducts: `, this);
+		}
+
+		getElements(element) {
+			this.dom = {};
+			this.dom.wrapper = element;
+			this.dom.amountWidget = this.dom.wrapper.querySelector(
+				select.cartProduct.amountWidget
+			);
+			this.dom.price = this.dom.wrapper.querySelector(select.cartProduct.price);
+			this.dom.edit = this.dom.wrapper.querySelector(select.cartProduct.edit);
+			this.dom.remove = this.dom.wrapper.querySelector(
+				select.cartProduct.remove
+			);
 		}
 	}
 
