@@ -445,9 +445,7 @@
 
 		remove(cartProduct) {
 			const delated = this.products.indexOf(cartProduct);
-			console.log(this.products);
 			this.products.splice(delated, 1);
-			console.log(this.products);
 
 			this.dom.productList.children[delated].remove();
 
