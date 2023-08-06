@@ -413,19 +413,45 @@
 		}
 
 		initActions() {
-			document.addEventListener('click', e => {
-				if (e.target.closest(select.cart.toggleTrigger)) {
-					this.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
-				}
-
-				if (!e.target.closest(select.containerOf.cart)) {
-					this.dom.wrapper.classList.remove(classNames.cart.wrapperActive);
-				}
+			this.dom.toggleTrigger.addEventListener('click', () => {
+				this.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
 			});
+
+			// [TO DO] ===== fix hiding cart after clicking trash icons =====
+
+			// document.addEventListener('click', e => {
+			// 	if (e.target.closest(select.cart.toggleTrigger)) {
+			// 		this.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+			// 	}
+
+			// if (e.target.closest('.fa-trash-alt')) {
+			// 	this.dom.wrapper.classList.add(classNames.cart.wrapperActive);
+			// }
+
+			// 	if (!e.target.closest(select.containerOf.cart)) {
+			// 		this.dom.wrapper.classList.remove(classNames.cart.wrapperActive);
+			// 		console.log(`outside`);
+			// 	}
+			// });
 
 			this.dom.productList.addEventListener('update', () => {
 				this.update();
 			});
+
+			this.dom.productList.addEventListener('remove', () => {
+				this.remove(event.detail.cartProduct);
+			});
+		}
+
+		remove(cartProduct) {
+			const delated = this.products.indexOf(cartProduct);
+			console.log(this.products);
+			this.products.splice(delated, 1);
+			console.log(this.products);
+
+			this.dom.productList.children[delated].remove();
+
+			this.update();
 		}
 
 		add(menuProduct) {
@@ -479,6 +505,7 @@
 
 			this.getElements(element);
 			this.initAmountWidget();
+			this.initActions();
 		}
 
 		getElements(element) {
@@ -505,6 +532,28 @@
 			this.price = this.amountWidget.value * this.priceSingle;
 			this.dom.price.textContent = this.price;
 			this.amount = this.amountWidget.value;
+		}
+
+		remove() {
+			const event = new CustomEvent('remove', {
+				bubbles: true,
+				detail: {
+					cartProduct: this,
+				},
+			});
+
+			this.dom.wrapper.dispatchEvent(event);
+		}
+
+		initActions() {
+			this.dom.edit.addEventListener('click', e => {
+				e.preventDefault();
+			});
+
+			this.dom.remove.addEventListener('click', e => {
+				e.preventDefault();
+				this.remove();
+			});
 		}
 	}
 
