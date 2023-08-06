@@ -396,6 +396,18 @@
 			this.dom.productList = this.dom.wrapper.querySelector(
 				select.cart.productList
 			);
+			this.dom.deliveryFee = this.dom.wrapper.querySelector(
+				select.cart.deliveryFee
+			);
+			this.dom.subtotalPrice = this.dom.wrapper.querySelector(
+				select.cart.subtotalPrice
+			);
+			this.dom.totalPrice = this.dom.wrapper.querySelectorAll(
+				select.cart.totalPrice
+			);
+			this.dom.totalNumber = this.dom.wrapper.querySelector(
+				select.cart.totalNumber
+			);
 		}
 
 		initActions() {
@@ -418,6 +430,29 @@
 			this.dom.productList.appendChild(this.element);
 
 			this.products.push(new CartProduct(menuProduct, this.element));
+
+			this.update();
+		}
+
+		update() {
+			const deliveryFee = settings.cart.defaultDeliveryFee;
+			let totalNumber = 0;
+			let subtotalPrice = 0;
+
+			for (let product of this.products) {
+				totalNumber += product.amount;
+				subtotalPrice += product.price;
+			}
+
+			this.totalPrice = totalNumber !== 0 ? subtotalPrice + deliveryFee : 0;
+
+			this.dom.deliveryFee.textContent = deliveryFee;
+			this.dom.totalNumber.textContent = totalNumber;
+			this.dom.subtotalPrice.textContent = subtotalPrice;
+
+			for (let price of this.dom.totalPrice) {
+				price.textContent = this.totalPrice;
+			}
 		}
 	}
 
