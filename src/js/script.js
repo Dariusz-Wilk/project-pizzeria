@@ -90,37 +90,35 @@
 
 	class Product {
 		constructor(id, data) {
-			const thisProduct = this;
-			thisProduct.id = id;
-			thisProduct.data = data;
+			this.id = id;
+			this.data = data;
 
-			thisProduct.renderInMenu();
-			thisProduct.getElements();
-			thisProduct.initAccorddion();
-			thisProduct.initOrderForm();
+			this.renderInMenu();
+			this.getElements();
+			this.initAccorddion();
+			this.initOrderForm();
 			this.initAmountWidget();
-			thisProduct.processOrder();
+			this.processOrder();
+			console.log(this);
 		}
 
 		renderInMenu() {
-			const thisProduct = this;
+			// const thisProduct = this;
 
 			/* generate HTML based on template */
-			const generatedHTML = templates.menuProduct(thisProduct.data);
+			const generatedHTML = templates.menuProduct(this.data);
 
 			/* create element using utils.createElementFromHTML */
-			thisProduct.element = utils.createDOMFromHTML(generatedHTML);
+			this.element = utils.createDOMFromHTML(generatedHTML);
 
 			/* find menu container */
 			const menuContainer = document.querySelector(select.containerOf.menu);
 
 			/* add element to menu */
-			menuContainer.appendChild(thisProduct.element);
+			menuContainer.appendChild(this.element);
 		}
 
 		getElements() {
-			const thisProduct = this;
-
 			this.dom = {};
 			this.dom.accordionTrigger = this.element.querySelector(
 				select.menuProduct.clickable
@@ -141,38 +139,17 @@
 			this.dom.amountWidgetElem = this.element.querySelector(
 				select.menuProduct.amountWidget
 			);
-
-			thisProduct.accordionTrigger = thisProduct.element.querySelector(
-				select.menuProduct.clickable
-			);
-			thisProduct.form = thisProduct.element.querySelector(
-				select.menuProduct.form
-			);
-			thisProduct.formInputs = thisProduct.form.querySelectorAll(
-				select.all.formInputs
-			);
-			thisProduct.cartButton = thisProduct.element.querySelector(
-				select.menuProduct.cartButton
-			);
-			thisProduct.priceElem = thisProduct.element.querySelector(
-				select.menuProduct.priceElem
-			);
-			thisProduct.imageWrapper = thisProduct.element.querySelector(
-				select.menuProduct.imageWrapper
-			);
 			this.amountWidgetElem = this.element.querySelector(
 				select.menuProduct.amountWidget
 			);
 		}
 
 		initAccorddion() {
-			const thisProduct = this;
-
 			/* find the clickable trigger (the element that should react to clicking) */
 			/* ==== thisProduct.accordionTrigger ==== */
 
 			/* START: add event listener to clickable trigger on event click */
-			thisProduct.accordionTrigger.addEventListener('click', function (event) {
+			this.dom.accordionTrigger.addEventListener('click', event => {
 				/* prevent default action for event */
 				event.preventDefault();
 				/* find active product (product that has active class) */
@@ -181,7 +158,7 @@
 				);
 				/* if there is active product and it's not thisProduct.element, remove class active from it */
 				for (let activeProduct of activeProducts) {
-					if (activeProduct !== thisProduct.element) {
+					if (activeProduct !== this.element) {
 						activeProduct.classList.remove(
 							classNames.menuProduct.wrapperActive
 						);
@@ -189,46 +166,40 @@
 				}
 
 				/* toggle active class on thisProduct.element */
-				thisProduct.element.classList.toggle(
-					classNames.menuProduct.wrapperActive
-				);
+				this.element.classList.toggle(classNames.menuProduct.wrapperActive);
 			});
 		}
 
 		initOrderForm() {
-			const thisProduct = this;
-
-			thisProduct.form.addEventListener('submit', function (event) {
+			this.dom.form.addEventListener('submit', event => {
 				event.preventDefault();
-				thisProduct.processOrder();
+				this.processOrder();
 			});
 
-			for (let input of thisProduct.formInputs) {
-				input.addEventListener('change', function () {
-					thisProduct.processOrder();
+			for (let input of this.dom.formInputs) {
+				input.addEventListener('change', () => {
+					this.processOrder();
 				});
 			}
 
-			thisProduct.cartButton.addEventListener('click', event => {
+			this.dom.cartButton.addEventListener('click', event => {
 				event.preventDefault();
-				thisProduct.processOrder();
+				this.processOrder();
 				this.addToCart();
 			});
 		}
 
 		processOrder() {
-			const thisProduct = this;
-
 			// covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
-			const formData = utils.serializeFormToObject(thisProduct.form);
+			const formData = utils.serializeFormToObject(this.dom.form);
 
 			// set price to default price
-			let price = thisProduct.data.price;
+			let price = this.data.price;
 
 			// for every category (param)...
-			for (let paramId in thisProduct.data.params) {
+			for (let paramId in this.data.params) {
 				// determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
-				const param = thisProduct.data.params[paramId];
+				const param = this.data.params[paramId];
 
 				// for every option in this category
 				for (let optionId in param.options) {
@@ -237,7 +208,7 @@
 
 					const selectedItem =
 						paramId in formData && formData[paramId].includes(optionId);
-					const image = thisProduct.imageWrapper.querySelector(
+					const image = this.dom.imageWrapper.querySelector(
 						`.${paramId}-${optionId}`
 					);
 
@@ -265,13 +236,12 @@
 			price *= this.amountWidget.value;
 
 			// update calculated price in the HTML
-			thisProduct.priceElem.innerHTML = price;
+			this.dom.priceElem.innerHTML = price;
 		}
 
 		initAmountWidget() {
 			this.amountWidget = new AmountWidget(this.amountWidgetElem);
 			this.amountWidgetElem.addEventListener('update', () => {
-				// how this instancy knows 'update' exist?
 				this.processOrder();
 			});
 		}
@@ -431,10 +401,6 @@
 			// 	if (e.target.closest(select.cart.toggleTrigger)) {
 			// 		this.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
 			// 	}
-
-			// if (e.target.closest('.fa-trash-alt')) {
-			// 	this.dom.wrapper.classList.add(classNames.cart.wrapperActive);
-			// }
 
 			// 	if (!e.target.closest(select.containerOf.cart)) {
 			// 		this.dom.wrapper.classList.remove(classNames.cart.wrapperActive);
@@ -622,6 +588,15 @@
 			const thisApp = this;
 			thisApp.data = {};
 			const url = `${settings.db.url}/${settings.db.products}`;
+
+			// async function getFetchData(url) {
+			// 	const response = await fetch(url);
+			// 	thisApp.data.products = await response.json();
+
+			// 	thisApp.initMenu();
+			// }
+
+			// getFetchData(url);
 
 			fetch(url)
 				.then(function (rawResponse) {
