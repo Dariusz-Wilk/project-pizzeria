@@ -99,7 +99,6 @@
 			this.initOrderForm();
 			this.initAmountWidget();
 			this.processOrder();
-			console.log(this);
 		}
 
 		renderInMenu() {
@@ -395,19 +394,6 @@
 				this.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
 			});
 
-			// [TO DO] ===== fix hiding cart after clicking trash icons =====
-
-			// document.addEventListener('click', e => {
-			// 	if (e.target.closest(select.cart.toggleTrigger)) {
-			// 		this.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
-			// 	}
-
-			// 	if (!e.target.closest(select.containerOf.cart)) {
-			// 		this.dom.wrapper.classList.remove(classNames.cart.wrapperActive);
-			// 		console.log(`outside`);
-			// 	}
-			// });
-
 			this.dom.productList.addEventListener('update', () => {
 				this.update();
 			});
@@ -420,7 +406,6 @@
 				e.preventDefault();
 
 				this.sendOrder();
-				console.log(this.products);
 			});
 		}
 
@@ -440,8 +425,6 @@
 			for (let prod of this.products) {
 				payload.products.push(prod.getData());
 			}
-			console.log(payload);
-			console.log(this.products);
 
 			const options = {
 				method: 'POST',
@@ -457,6 +440,9 @@
 				})
 				.then(function (parsedResponse) {
 					console.log(parsedResponse);
+				})
+				.catch(function (err) {
+					console.error(`new error: `, err);
 				});
 		}
 
@@ -589,17 +575,9 @@
 			thisApp.data = {};
 			const url = `${settings.db.url}/${settings.db.products}`;
 
-			// async function getFetchData(url) {
-			// 	const response = await fetch(url);
-			// 	thisApp.data.products = await response.json();
-
-			// 	thisApp.initMenu();
-			// }
-
-			// getFetchData(url);
-
 			fetch(url)
 				.then(function (rawResponse) {
+					if (!rawResponse.ok) throw new Error();
 					return rawResponse.json();
 				})
 				.then(function (parsedResponse) {
@@ -608,6 +586,9 @@
 
 					// execute initMenu method
 					thisApp.initMenu();
+				})
+				.catch(function (err) {
+					console.error(`new error: `, err);
 				});
 		},
 		initMenu: function () {
