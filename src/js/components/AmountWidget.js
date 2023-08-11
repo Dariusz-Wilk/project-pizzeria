@@ -43,13 +43,11 @@ class AmountWidget {
 		});
 		this.linkDecrease.addEventListener('click', event => {
 			event.preventDefault();
-			console.log(this.input.value--);
-			this.setValue(this.input.value--);
+			this.setValue(+this.input.value - 1);
 		});
 		this.linkIncrease.addEventListener('click', event => {
 			event.preventDefault();
-			console.log(this.input.value++);
-			this.setValue(this.input.value++);
+			this.setValue(+this.input.value + 1);
 		});
 	}
 
