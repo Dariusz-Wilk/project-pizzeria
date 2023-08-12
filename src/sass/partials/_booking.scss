@@ -213,3 +213,8 @@
 	@include flex(row, flex-start, space-between);
 	margin: ($base-size * 4) auto;
 }
+
+.order-confirmation {
+	display: flex;
+	justify-content: space-evenly;
+}
