@@ -45,43 +45,39 @@ const app = {
 		}
 	},
 	initData: function () {
-		const thisApp = this;
-		thisApp.data = {};
+		this.data = {};
 		const url = `${settings.db.url}/${settings.db.products}`;
 
 		fetch(url)
-			.then(function (rawResponse) {
+			.then(rawResponse => {
 				if (!rawResponse.ok) throw new Error();
 				return rawResponse.json();
 			})
-			.then(function (parsedResponse) {
+			.then(parsedResponse => {
 				//save parsedResponse as thisApp.data.products
-				thisApp.data.products = parsedResponse;
+				this.data.products = parsedResponse;
 
 				// execute initMenu method
-				thisApp.initMenu();
+				this.initMenu();
 			})
 			.catch(function (err) {
 				console.error(`new error: `, err);
 			});
 	},
 	initMenu: function () {
-		const thisApp = this;
-
-		for (let productData in thisApp.data.products) {
+		for (let productData in this.data.products) {
 			new Product(
-				thisApp.data.products[productData].id,
-				thisApp.data.products[productData]
+				this.data.products[productData].id,
+				this.data.products[productData]
 			);
 		}
 	},
 	init: function () {
-		const thisApp = this;
 		console.log('*** App starting ***');
-		console.log('thisApp:', thisApp);
+		console.log('thisApp:', this);
 
 		this.initPages();
-		thisApp.initData();
+		this.initData();
 		this.initCart();
 		this.initBooking();
 	},
