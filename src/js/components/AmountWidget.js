@@ -1,61 +1,51 @@
 import { select, settings } from '../settings.js';
+import BaseWidget from './baseWidget.js';
 
-class AmountWidget {
+class AmountWidget extends BaseWidget {
 	constructor(element) {
-		this.value = settings.amountWidget.defaultValue;
+		super(element, settings.amountWidget.defaultValue);
 		this.getElements(element);
-		this.setValue(this.input.value);
 		this.initAction();
+
+		console.log(`AmountWidget: `, this);
 	}
 
-	getElements(element) {
-		this.element = element;
-		this.input = this.element.querySelector(select.widgets.amount.input);
-		this.linkDecrease = this.element.querySelector(
+	getElements() {
+		this.dom.input = this.dom.wrapper.querySelector(
+			select.widgets.amount.input
+		);
+		this.dom.linkDecrease = this.dom.wrapper.querySelector(
 			select.widgets.amount.linkDecrease
 		);
-		this.linkIncrease = this.element.querySelector(
+		this.dom.linkIncrease = this.dom.wrapper.querySelector(
 			select.widgets.amount.linkIncrease
 		);
 	}
 
-	setValue(value) {
-		const newValue = parseInt(value);
+	isValid(value) {
+		return (
+			!isNaN(value) &&
+			value >= settings.amountWidget.defaultMin &&
+			value <= settings.amountWidget.defaultMax
+		);
+	}
 
-		/* TODO: Add validation */
-
-		if (
-			this.value !== newValue &&
-			!isNaN(newValue) &&
-			newValue >= settings.amountWidget.defaultMin &&
-			newValue <= settings.amountWidget.defaultMax
-		) {
-			this.value = newValue;
-			this.announce();
-		}
-
-		this.input.value = this.value;
+	renderValue() {
+		this.dom.input.value = this.value;
 	}
 
 	initAction() {
-		this.input.addEventListener('change', () => {
-			this.setValue(this.input.value);
+		this.dom.input.addEventListener('change', () => {
+			this.setValue(this.dom.input.value);
 		});
-		this.linkDecrease.addEventListener('click', event => {
+		this.dom.linkDecrease.addEventListener('click', event => {
 			event.preventDefault();
-			this.setValue(+this.input.value - 1);
+			this.setValue(+this.dom.input.value - 1);
 		});
-		this.linkIncrease.addEventListener('click', event => {
+		this.dom.linkIncrease.addEventListener('click', event => {
 			event.preventDefault();
-			this.setValue(+this.input.value + 1);
+			this.setValue(+this.dom.input.value + 1);
 		});
-	}
-
-	announce() {
-		const event = new Event('update', {
-			bubbles: true,
-		});
-		this.element.dispatchEvent(event);
 	}
 }
 
