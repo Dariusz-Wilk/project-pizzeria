@@ -6,8 +6,6 @@ class AmountWidget extends BaseWidget {
 		super(element, settings.amountWidget.defaultValue);
 		this.getElements(element);
 		this.initAction();
-
-		console.log(`AmountWidget: `, this);
 	}
 
 	getElements() {
@@ -36,7 +34,8 @@ class AmountWidget extends BaseWidget {
 
 	initAction() {
 		this.dom.input.addEventListener('change', () => {
-			this.setValue(this.dom.input.value);
+			this.value = this.dom.input.value;
+			// this.setValue(this.dom.input.value);
 		});
 		this.dom.linkDecrease.addEventListener('click', event => {
 			event.preventDefault();

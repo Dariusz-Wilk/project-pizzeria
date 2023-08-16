@@ -3,14 +3,18 @@ class BaseWidget {
 		this.dom = {};
 		this.dom.wrapper = wrapperElement;
 
-		this.value = initialValue;
+		this.correctValue = initialValue;
 	}
 
-	setValue(value) {
+	get value() {
+		return this.correctValue;
+	}
+
+	set value(value) {
 		const newValue = this.parseValue(value);
 
-		if (this.value !== newValue && this.isValid(newValue)) {
-			this.value = newValue;
+		if (this.correctValue !== newValue && this.isValid(newValue)) {
+			this.correctValue = newValue;
 			this.announce();
 		}
 
@@ -27,6 +31,10 @@ class BaseWidget {
 
 	renderValue() {
 		this.dom.wrapper.innerHTML = this.value;
+	}
+
+	setValue(value) {
+		this.value = value;
 	}
 
 	announce() {
