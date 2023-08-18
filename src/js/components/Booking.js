@@ -36,6 +36,8 @@ class Booking {
 			}?${params.eventsRepeat.join('&')}`,
 		};
 
+		console.log(urls.booking);
+
 		Promise.all([
 			fetch(urls.booking),
 			fetch(urls.eventsCurrent),
@@ -136,7 +138,27 @@ class Booking {
 				table.classList.remove(classNames.booking.tableBooked);
 			}
 		}
-		console.log(allAvailable);
+	}
+
+	selectTable(e) {
+		const clickedTable = e.target.closest(select.booking.tables);
+		for (let table of this.dom.tables) {
+			if (table !== e.target) {
+				table.classList.remove(classNames.booking.tableChosen);
+			}
+		}
+		if (
+			!clickedTable ||
+			clickedTable.classList.contains(classNames.booking.tableBooked)
+		) {
+			return;
+		} else {
+			clickedTable.classList.toggle(classNames.booking.tableChosen);
+			this.chosenTableId = parseInt(
+				clickedTable.getAttribute(select.booking.tableID)
+			);
+		}
+		console.log(this);
 	}
 
 	render(element) {
@@ -159,6 +181,9 @@ class Booking {
 			select.widgets.hourPicker.wrapper
 		);
 		this.dom.tables = this.dom.wrapper.querySelectorAll(select.booking.tables);
+		this.dom.floorPlan = this.dom.wrapper.querySelector(
+			select.booking.floorPlan
+		);
 	}
 
 	initWidgets() {
@@ -171,8 +196,13 @@ class Booking {
 		this.datePickerWidget = new DatePicker(this.dom.datePickerWidget);
 		this.hourPickerWidget = new HourPicker(this.dom.hourPickerWidget);
 
-		this.dom.wrapper.addEventListener('update', () => {
+		this.dom.wrapper.addEventListener('update', e => {
 			this.updateDOM();
+
+			this.selectTable(e);
+		});
+		this.dom.floorPlan.addEventListener('click', e => {
+			this.selectTable(e);
 		});
 	}
 }
