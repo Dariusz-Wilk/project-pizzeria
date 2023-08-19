@@ -1,0 +1,77 @@
+.home {
+	// ==== section link to pages & opening time ====
+	&__boxes {
+		margin: 70px 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		color: $color-light;
+		font-family: $font-header;
+		text-align: center;
+
+		&-title {
+			position: absolute;
+			text-transform: uppercase;
+			font-size: 28px;
+			margin: 8px;
+			top: 50%;
+			transform: translateY(-50%);
+			transition: 0.3s;
+		}
+
+		&-titles {
+			text-transform: uppercase;
+			font-size: 28px;
+			margin: 8px;
+		}
+
+		&-subtitle {
+			text-transform: uppercase;
+			font-size: 16px;
+			font-family: $font-text;
+			margin: 8px;
+		}
+	}
+
+	&__small-box {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 0 0 49%;
+		height: 150px;
+		background-position: center;
+		background-size: cover;
+		overflow: hidden;
+
+		&:hover .home__info-text {
+			bottom: 10px;
+			transition: all 0.4s;
+		}
+		&:hover .home__boxes-title {
+			top: 40px;
+		}
+	}
+	&__info-text {
+		position: absolute;
+		bottom: -35px;
+		font-family: $font-text;
+	}
+
+	&__order-box {
+		background-image: url('../../images/assets/pizza-1.jpg');
+	}
+	&__book-box {
+		background-image: url('../../images/assets/pizza-2.jpg');
+	}
+
+	&__opening-box {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 0 0 100%;
+		background-color: $color-main;
+		height: 150px;
+		margin-top: 10px;
+	}
+}
