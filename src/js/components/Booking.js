@@ -136,6 +136,8 @@ class Booking {
 			} else {
 				table.classList.remove(classNames.booking.tableBooked);
 			}
+
+			table.classList.remove(classNames.booking.tableChosen);
 		}
 	}
 
@@ -172,6 +174,35 @@ class Booking {
 		bookload.starters = this.startersArray;
 		bookload.phone = phone.value;
 		bookload.address = address.value;
+
+		const url = `${settings.db.url}/${settings.db.booking}`;
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(bookload),
+		};
+
+		fetch(url, options)
+			.then(function (response) {
+				return response.json();
+			})
+			.then(parsedResponse => {
+				this.makeBooked(
+					parsedResponse.date,
+					parsedResponse.hour,
+					parsedResponse.duration,
+					parsedResponse.table
+				);
+				this.updateDOM();
+				alert(
+					`Your booking details:\n \nDate: ${parsedResponse.date} \nTime: ${parsedResponse.hour} \nPeople: ${parsedResponse.ppl} \nTable: ${parsedResponse.table}`
+				);
+
+				console.log(parsedResponse);
+			})
+			.catch(err => alert(err));
 	}
 
 	selectStarters(e) {
