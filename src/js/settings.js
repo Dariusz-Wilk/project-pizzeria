@@ -45,6 +45,10 @@ export const select = {
 		tables: '.floor-plan .table',
 		floorPlan: '.floor-plan',
 		tableID: 'data-table',
+		sendBookingBtn: '.btn-secondary',
+		phoneNum: '.order-confirmation > input[name="phone"]',
+		address: '.order-confirmation > input[name="address"]',
+		checkboxForm: '.checkbox-form',
 	},
 	nav: {
 		links: '.main-nav a',

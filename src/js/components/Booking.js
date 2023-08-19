@@ -10,6 +10,7 @@ class Booking {
 		this.initWidgets();
 		this.getData();
 
+		this.startersArray = [];
 		console.log(this);
 	}
 
@@ -35,8 +36,6 @@ class Booking {
 				settings.db.event
 			}?${params.eventsRepeat.join('&')}`,
 		};
-
-		console.log(urls.booking);
 
 		Promise.all([
 			fetch(urls.booking),
@@ -147,18 +146,46 @@ class Booking {
 				table.classList.remove(classNames.booking.tableChosen);
 			}
 		}
-		if (
-			!clickedTable ||
+		if (!clickedTable) {
+			return;
+		} else if (
 			clickedTable.classList.contains(classNames.booking.tableBooked)
 		) {
-			return;
+			alert('This table is already booked. Please select different one');
 		} else {
 			clickedTable.classList.toggle(classNames.booking.tableChosen);
 			this.chosenTableId = parseInt(
 				clickedTable.getAttribute(select.booking.tableID)
 			);
 		}
-		console.log(this);
+	}
+
+	sendBooking() {
+		const phone = this.dom.wrapper.querySelector(select.booking.phoneNum);
+		const address = this.dom.wrapper.querySelector(select.booking.address);
+		const bookload = {};
+		bookload.date = this.datePickerWidget.value;
+		bookload.hour = this.hourPickerWidget.value;
+		bookload.table = this.chosenTableId;
+		bookload.duration = this.hourAmountWidget.correctValue;
+		bookload.ppl = this.peopleAmountWidget.correctValue;
+		bookload.starters = this.startersArray;
+		bookload.phone = phone.value;
+		bookload.address = address.value;
+	}
+
+	selectStarters(e) {
+		const clickedStarter = e.target.closest('input[type="checkbox"]');
+		if (!clickedStarter) {
+			return;
+		} else {
+			if (clickedStarter.checked) {
+				this.startersArray.push(clickedStarter.value);
+			} else {
+				const starterIndex = this.startersArray.indexOf(clickedStarter.value);
+				this.startersArray.splice(starterIndex, 1);
+			}
+		}
 	}
 
 	render(element) {
@@ -184,6 +211,12 @@ class Booking {
 		this.dom.floorPlan = this.dom.wrapper.querySelector(
 			select.booking.floorPlan
 		);
+		this.dom.sendBookingBtn = this.dom.wrapper.querySelector(
+			select.booking.sendBookingBtn
+		);
+		this.dom.checkboxForm = this.dom.wrapper.querySelector(
+			select.booking.checkboxForm
+		);
 	}
 
 	initWidgets() {
@@ -203,6 +236,14 @@ class Booking {
 		});
 		this.dom.floorPlan.addEventListener('click', e => {
 			this.selectTable(e);
+		});
+		this.dom.sendBookingBtn.addEventListener('click', e => {
+			e.preventDefault();
+			this.sendBooking();
+		});
+
+		this.dom.checkboxForm.addEventListener('click', e => {
+			this.selectStarters(e);
 		});
 	}
 }
