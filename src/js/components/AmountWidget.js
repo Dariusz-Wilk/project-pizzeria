@@ -4,8 +4,9 @@ import BaseWidget from './baseWidget.js';
 class AmountWidget extends BaseWidget {
 	constructor(element) {
 		super(element, settings.amountWidget.defaultValue);
-		this.getElements(element);
+		this.getElements();
 		this.initAction();
+		this.renderValue();
 	}
 
 	getElements() {
