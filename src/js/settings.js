@@ -52,6 +52,8 @@ export const select = {
 	},
 	nav: {
 		links: '.main-nav a',
+		imgLinks: '.home__small-box',
+		imgLinkId: 'data-link',
 	},
 	cart: {
 		productList: '.cart__order-summary',

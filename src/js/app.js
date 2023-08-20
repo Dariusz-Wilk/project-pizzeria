@@ -7,6 +7,8 @@ const app = {
 	initPages: function () {
 		this.pages = document.querySelector(select.containerOf.pages).children;
 		this.navLinks = document.querySelectorAll(select.nav.links);
+		this.homePageImgLinks = document.querySelectorAll(select.nav.imgLinks);
+		console.log(this.homePageImgLinks);
 
 		const idFromHash = window.location.hash.replace('#/', '');
 
@@ -25,6 +27,16 @@ const app = {
 			link.addEventListener('click', e => {
 				e.preventDefault();
 				const linkId = link.hash.replace('#', '');
+				this.activatePage(linkId);
+
+				/* change URL hash */
+				window.location.hash = '#/' + linkId;
+			});
+		}
+		for (let imgLink of this.homePageImgLinks) {
+			imgLink.addEventListener('click', e => {
+				e.preventDefault();
+				const linkId = imgLink.getAttribute(select.nav.imgLinkId);
 				this.activatePage(linkId);
 
 				/* change URL hash */
