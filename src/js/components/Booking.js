@@ -251,8 +251,14 @@ class Booking {
 	}
 
 	initWidgets() {
-		this.peopleAmountWidget = new AmountWidget(this.dom.peopleAmount);
-		this.hourAmountWidget = new AmountWidget(this.dom.hoursAmount);
+		this.peopleAmountWidget = new AmountWidget(
+			this.dom.peopleAmount,
+			settings.amountWidget.defaultValue
+		);
+		this.hourAmountWidget = new AmountWidget(
+			this.dom.hoursAmount,
+			settings.amountWidget.defaultValue
+		);
 
 		this.dom.peopleAmount.addEventListener('update', () => {});
 		this.dom.hoursAmount.addEventListener('update', () => {});
