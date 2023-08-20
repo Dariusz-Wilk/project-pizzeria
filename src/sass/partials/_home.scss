@@ -43,6 +43,7 @@
 		background-position: center;
 		background-size: cover;
 		overflow: hidden;
+		cursor: pointer;
 
 		&:hover .home__info-text {
 			bottom: 10px;
@@ -108,5 +109,71 @@
 		.carousel-author {
 			font-style: italic;
 		}
+	}
+}
+
+.home__gallery {
+	margin: 30px 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+
+	.home__img-box {
+		position: relative;
+		flex: 0 0 32%;
+		height: 200px;
+		margin: 5px 0;
+		background-position: center;
+		background-size: cover;
+
+		&:hover .home__img-shadow {
+			display: flex;
+		}
+
+		.home__img-shadow {
+			display: none;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: rgba(0, 0, 0, 0.489);
+		}
+
+		i.fa-solid {
+			padding: 5px;
+			margin: 0 4px;
+			color: $color-light;
+			font-size: 22px;
+			cursor: pointer;
+			&:hover {
+				color: $color-main;
+			}
+		}
+	}
+	.instagram-link {
+		margin-top: 5px;
+		color: $color-main;
+	}
+
+	.gallery-img1 {
+		background-image: url('../../images/assets/pizza-4.jpg');
+	}
+	.gallery-img2 {
+		background-image: url('../../images/assets/pizza-5.jpg');
+	}
+	.gallery-img3 {
+		background-image: url('../../images/assets/pizza-6.jpg');
+	}
+	.gallery-img4 {
+		background-image: url('../../images/assets/pizza-7.jpg');
+	}
+	.gallery-img5 {
+		background-image: url('../../images/assets/pizza-8.jpg');
+	}
+	.gallery-img6 {
+		background-image: url('../../images/assets/pizza-9.jpg');
 	}
 }
