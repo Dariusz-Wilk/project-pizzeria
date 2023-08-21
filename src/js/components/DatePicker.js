@@ -11,6 +11,9 @@ class DatePicker extends BaseWidget {
 			select.widgets.datePicker.input
 		);
 		thisWidget.initPlugin();
+		this.renderValue();
+		console.log(this);
+		// thisWidget.dom.input.value = this.correctValue;
 	}
 	initPlugin() {
 		const thisWidget = this;
@@ -46,7 +49,9 @@ class DatePicker extends BaseWidget {
 		return true;
 	}
 
-	renderValue() {}
+	renderValue() {
+		this.dom.input.value = this.value;
+	}
 }
 
 export default DatePicker;
