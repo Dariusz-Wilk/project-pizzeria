@@ -253,7 +253,8 @@ class Booking {
 	initWidgets() {
 		this.peopleAmountWidget = new AmountWidget(
 			this.dom.peopleAmount,
-			settings.amountWidget.defaultValue
+			settings.amountWidget.defaultValue,
+			20
 		);
 		this.hourAmountWidget = new AmountWidget(
 			this.dom.hoursAmount,

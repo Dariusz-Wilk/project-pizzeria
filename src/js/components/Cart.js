@@ -110,6 +110,7 @@ class Cart {
 		this.products.push(new CartProduct(menuProduct, this.element));
 
 		this.update();
+		console.log(this.products);
 	}
 
 	update() {

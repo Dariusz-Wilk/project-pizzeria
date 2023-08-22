@@ -147,7 +147,7 @@ class Product {
 	}
 
 	initAmountWidget() {
-		this.amountWidget = new AmountWidget(this.amountWidgetElem, 1);
+		this.amountWidget = new AmountWidget(this.amountWidgetElem);
 		this.amountWidgetElem.addEventListener('update', () => {
 			this.processOrder();
 		});
