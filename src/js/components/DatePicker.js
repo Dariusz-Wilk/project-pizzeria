@@ -13,7 +13,6 @@ class DatePicker extends BaseWidget {
 		thisWidget.initPlugin();
 		this.renderValue();
 		console.log(this);
-		// thisWidget.dom.input.value = this.correctValue;
 	}
 	initPlugin() {
 		const thisWidget = this;

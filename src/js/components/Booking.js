@@ -6,10 +6,11 @@ import HourPicker from './HourPicker.js';
 
 class Booking {
 	constructor(element) {
+		this.booked = {};
 		this.render(element);
 		this.initWidgets();
-		this.getData();
 
+		this.getData();
 		this.startersArray = [];
 		console.log(this);
 	}
@@ -58,8 +59,6 @@ class Booking {
 	}
 
 	parseData(bookings, eventsCurrent, eventsRepeat) {
-		this.booked = {};
-
 		for (let event of bookings) {
 			this.makeBooked(event.date, event.hour, event.duration, event.table);
 		}
@@ -90,6 +89,54 @@ class Booking {
 		this.updateDOM();
 	}
 
+	checkSetColor() {
+		this.dom.hourInputRange = this.dom.wrapper.querySelector(
+			'[id^="js-rangeSlider"]'
+		);
+		this.dom.inputSlider = this.dom.wrapper.querySelector(
+			'.rangeSlider__fill__horizontal'
+		);
+		let y = 1;
+		const width = 4;
+		const timesArr = [];
+		let color = 'linear-gradient(to right, ';
+		for (let time in this.booked[this.datePickerWidget.correctValue]) {
+			timesArr.push(
+				`${time} : ${
+					this.booked[this.datePickerWidget.correctValue][time].length
+				}`
+			);
+		}
+
+		for (let time of timesArr.sort()) {
+			if (time.charAt(time.length - 1) == 0) {
+				color += `green ${y * width}%, `;
+			} else if (time.charAt(time.length - 1) == 1) {
+				color += `yellow ${y * width}%, `;
+			} else if (time.charAt(time.length - 1) == 2) {
+				color += `orange ${y * width}%, `;
+			} else {
+				color += `red ${y * width}%, `;
+			}
+			y++;
+		}
+		const inputGradient = color.slice(0, -2) + ')';
+
+		this.dom.hourInputRange.style.background = inputGradient;
+		this.dom.inputSlider.style.background = 'none';
+	}
+
+	createEmptyArrForEachHours(date) {
+		if (typeof this.booked[date] == 'undefined') {
+			this.booked[date] = {};
+		}
+		for (let hourBlock = 12; hourBlock < 24; hourBlock += 0.5) {
+			if (typeof this.booked[date][hourBlock] == 'undefined') {
+				this.booked[date][hourBlock] = [];
+			}
+		}
+	}
+
 	makeBooked(date, hour, duration, table) {
 		if (typeof this.booked[date] == 'undefined') {
 			this.booked[date] = {};
@@ -107,6 +154,7 @@ class Booking {
 			}
 			this.booked[date][hourBlock].push(table);
 		}
+		this.createEmptyArrForEachHours(date);
 	}
 
 	updateDOM() {
@@ -139,6 +187,8 @@ class Booking {
 
 			table.classList.remove(classNames.booking.tableChosen);
 		}
+
+		this.checkSetColor();
 	}
 
 	selectTable(e) {
@@ -199,7 +249,6 @@ class Booking {
 				alert(
 					`Your booking details:\n \nDate: ${parsedResponse.date} \nTime: ${parsedResponse.hour} \nPeople: ${parsedResponse.ppl} \nTable: ${parsedResponse.table}`
 				);
-
 				console.log(parsedResponse);
 			})
 			.catch(err => alert(err));
@@ -274,10 +323,12 @@ class Booking {
 		});
 		this.dom.floorPlan.addEventListener('click', e => {
 			this.selectTable(e);
+			console.log(this);
 		});
 		this.dom.sendBookingBtn.addEventListener('click', e => {
 			e.preventDefault();
 			this.sendBooking();
+			console.log(this);
 		});
 
 		this.dom.checkboxForm.addEventListener('click', e => {
