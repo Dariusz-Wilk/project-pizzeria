@@ -7,6 +7,7 @@ class Cart {
 		this.products = [];
 		this.getElements(element);
 		this.initActions();
+		console.log(this);
 	}
 
 	getElements(element) {
@@ -36,8 +37,20 @@ class Cart {
 	}
 
 	initActions() {
+		const wholePage = document.body;
+		console.log(wholePage);
+		console.log(this.dom.wrapper);
 		this.dom.toggleTrigger.addEventListener('click', () => {
 			this.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+		});
+
+		wholePage.addEventListener('click', e => {
+			if (
+				!e.target.closest('.cart') &&
+				!e.target.classList.contains('cart-trash-icon')
+			) {
+				this.dom.wrapper.classList.remove('active');
+			}
 		});
 
 		this.dom.productList.addEventListener('update', () => {
